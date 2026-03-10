@@ -32,7 +32,7 @@ contract REFLEXInsurance is SomniaEventHandler, ReentrancyGuard, Ownable {
     // Cap single payout at 10% of pool so one large claim can't drain reserves.
     uint256 private constant MAX_PAYOUT_POOL_FRACTION = 10;
 
-    uint256 private constant MIN_SUB_FUNDING = 32 ether;
+    uint256 private constant MIN_SUB_FUNDING = 2 ether;
 
     // ─── State ───────────────────────────────────────────────────────────────
 

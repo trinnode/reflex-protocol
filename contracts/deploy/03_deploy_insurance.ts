@@ -4,9 +4,9 @@ import { ethers } from "hardhat";
 
 const SOMNIA_PRECOMPILE = "0x0000000000000000000000000000000000000100";
 
-// The insurance contract must be funded with at least 32 STT so it can create
+// The insurance contract must be funded with at least 2 STT so it can create
 // its Reactivity subscription in the constructor.
-const INITIAL_SUBSCRIPTION_FUNDING = ethers.parseEther("32");
+const INITIAL_SUBSCRIPTION_FUNDING = ethers.parseEther("2");
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
@@ -16,7 +16,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const vault = await get("REFLEXVault");
 
   // On local networks with mock precompile, fund the subscription at deploy.
-  // On live networks the constructor gracefully skips subscription if value < 32 STT;
+  // On live networks the constructor gracefully skips subscription if value < 2 STT;
   // owner can call initializeSubscription() later when the precompile is ready.
   const isLocal = ["hardhat", "localhost"].includes(hre.network.name);
 
