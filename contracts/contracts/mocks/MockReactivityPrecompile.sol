@@ -2,10 +2,9 @@
 pragma solidity ^0.8.24;
 
 interface IEventHandler {
-    function handleEvent(
-        uint256 subscriptionId,
+    function onEvent(
         address emitter,
-        bytes32[] calldata topics,
+        bytes32[] calldata eventTopics,
         bytes calldata data
     ) external;
 }
@@ -22,12 +21,24 @@ contract MockReactivityPrecompile {
     );
     event UnsubscribeCall(uint256 indexed subscriptionId);
 
-    struct Subscription {
+    struct SubscriptionData {
+        bytes32[4] eventTopics;
+        address origin;
+        address caller;
         address emitter;
-        bytes32 topic;
-        address handler;
-        bool    active;
-        uint256 balance;
+        address handlerContractAddress;
+        bytes4 handlerFunctionSelector;
+        uint64 priorityFeePerGas;
+        uint64 maxFeePerGas;
+        uint64 gasLimit;
+        bool isGuaranteed;
+        bool isCoalesced;
+    }
+
+    struct Subscription {
+        SubscriptionData data;
+        address owner;
+        bool active;
     }
 
     // Storage slot 0 — starts at 0, first returned subId is 1 (pre-increment).
@@ -35,24 +46,22 @@ contract MockReactivityPrecompile {
 
     mapping(uint256 => Subscription) public subscriptions;
 
-    function subscribe(
-        address emitterFilter,
-        bytes32 topicFilter,
-        address, /* originFilter */
-        address, /* callerFilter */
-        address handler,
-        bool,    /* isGuaranteed */
-        bool     /* isCoalesced */
-    ) external payable returns (uint256 subscriptionId) {
+    function subscribe(SubscriptionData calldata subscriptionData)
+        external
+        returns (uint256 subscriptionId)
+    {
         subscriptionId = ++_nextSubId;
         subscriptions[subscriptionId] = Subscription({
-            emitter:  emitterFilter,
-            topic:    topicFilter,
-            handler:  handler,
-            active:   true,
-            balance:  msg.value
+            data: subscriptionData,
+            owner: msg.sender,
+            active: true
         });
-        emit SubscribeCall(subscriptionId, emitterFilter, topicFilter, handler);
+        emit SubscribeCall(
+            subscriptionId,
+            subscriptionData.emitter,
+            subscriptionData.eventTopics[0],
+            subscriptionData.handlerContractAddress
+        );
     }
 
     function unsubscribe(uint256 subscriptionId) external {
@@ -60,23 +69,13 @@ contract MockReactivityPrecompile {
         emit UnsubscribeCall(subscriptionId);
     }
 
-    function fundSubscription(uint256 subscriptionId) external payable {
-        subscriptions[subscriptionId].balance += msg.value;
-    }
-
-    function getSubscription(uint256 subscriptionId)
+    function getSubscriptionInfo(uint256 subscriptionId)
         external
         view
-        returns (
-            address emitter,
-            bytes32 topic,
-            address handler,
-            bool    active,
-            uint256 balance
-        )
+        returns (SubscriptionData memory subscriptionData, address owner)
     {
         Subscription storage s = subscriptions[subscriptionId];
-        return (s.emitter, s.topic, s.handler, s.active, s.balance);
+        return (s.data, s.owner);
     }
 
     /// @dev Test helper — simulates the precompile calling handleEvent on a
@@ -84,11 +83,10 @@ contract MockReactivityPrecompile {
     ///      (0x0100), msg.sender inside handleEvent passes the onlyPrecompile guard.
     function triggerHandler(
         address handler,
-        uint256 subscriptionId,
         address emitter,
         bytes32[] calldata topics,
         bytes calldata data
     ) external {
-        IEventHandler(handler).handleEvent(subscriptionId, emitter, topics, data);
+        IEventHandler(handler).onEvent(emitter, topics, data);
     }
 }

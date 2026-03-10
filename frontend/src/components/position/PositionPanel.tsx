@@ -199,7 +199,7 @@ export default function PositionPanel({
             </svg>
           </div>
           <div className={styles.statContent}>
-            <span className={styles.statLabel}>Subscription</span>
+            <span className={styles.statLabel}>Monitoring Pool</span>
             <span className={styles.statValue}>
               {subscriptionBalance !== undefined ? `${formatSTT(subscriptionBalance)} STT` : "Active"}
             </span>

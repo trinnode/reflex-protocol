@@ -21,12 +21,11 @@ const PRESETS = [
   { label: "Aggressive", value: 125, color: "#F97316", icon: "⚡" },
 ] as const;
 
-const MIN_SUB_FUNDING = 2;
-const MIN_TOTAL_COLLATERAL = 2.01;
+const MIN_COLLATERAL = 0.01;
 const MIN_OPEN_RATIO = 140;
 const RECOMMENDED_GAS_BUFFER = 0.05;
 const QUICK_FILL_COLLATERAL = "2.85";
-const QUICK_FILL_DEBT = "0.55";
+const QUICK_FILL_DEBT = "1.50";
 const QUICK_FILL_RATIO = 150;
 
 // ── Component ────────────────────────────────────────────
@@ -66,15 +65,14 @@ export default function OpenPositionModal({
 
   const collateralNum = parseFloat(collateral) || 0;
   const debtNum = parseFloat(debt) || 0;
-  const netCollateralNum = Math.max(collateralNum - MIN_SUB_FUNDING, 0);
   const maxDebtAtThreshold =
-    netCollateralNum > 0 ? (netCollateralNum * 100) / protectionRatio : 0;
+    collateralNum > 0 ? (collateralNum * 100) / protectionRatio : 0;
   const computedRatio =
-    debtNum > 0 ? Math.round((netCollateralNum / debtNum) * 100) : 0;
+    debtNum > 0 ? Math.round((collateralNum / debtNum) * 100) : 0;
 
   const collateralError =
-    collateral && collateralNum < MIN_TOTAL_COLLATERAL
-      ? `Minimum ${MIN_TOTAL_COLLATERAL} STT required`
+    collateral && collateralNum < MIN_COLLATERAL
+      ? `Minimum ${MIN_COLLATERAL} STT collateral required`
       : null;
 
   const debtError =
@@ -84,7 +82,7 @@ export default function OpenPositionModal({
 
   const hasErrors = !!(collateralError || debtError);
   const isValid =
-    collateralNum >= MIN_TOTAL_COLLATERAL &&
+    collateralNum >= MIN_COLLATERAL &&
     debtNum > 0 &&
     computedRatio >= MIN_OPEN_RATIO &&
     !hasErrors;
@@ -174,7 +172,7 @@ export default function OpenPositionModal({
                 className={styles.input}
                 type="number"
                 step="0.01"
-                min={String(MIN_TOTAL_COLLATERAL)}
+                min={String(MIN_COLLATERAL)}
                 placeholder="0.00"
                 value={collateral}
                 onChange={(e) => setCollateral(e.target.value)}
@@ -182,10 +180,10 @@ export default function OpenPositionModal({
               />
             </div>
             <span className={styles.hint}>
-              Min {MIN_TOTAL_COLLATERAL} STT total (includes {MIN_SUB_FUNDING} STT for reactive subscription)
+              Min {MIN_COLLATERAL} STT collateral
             </span>
             <span className={styles.hint}>
-              Minimum usable collateral after subscription: {(MIN_TOTAL_COLLATERAL - MIN_SUB_FUNDING).toFixed(2)} STT
+              Protocol-funded monitoring means your full deposit stays as collateral
             </span>
             <span className={styles.hint}>
               Recommended: keep at least {RECOMMENDED_GAS_BUFFER.toFixed(2)} STT in wallet for gas
@@ -221,13 +219,13 @@ export default function OpenPositionModal({
                 </span>
               </div>
             )}
-            {collateralNum >= MIN_TOTAL_COLLATERAL && (
+            {collateralNum >= MIN_COLLATERAL && (
               <div className={styles.ratioPreview}>
-                <span>Usable Collateral</span>
-                <span className={styles.ratioPreviewValue}>{netCollateralNum.toFixed(2)} STT</span>
+                <span>Active Collateral</span>
+                <span className={styles.ratioPreviewValue}>{collateralNum.toFixed(2)} STT</span>
               </div>
             )}
-            {collateralNum >= MIN_TOTAL_COLLATERAL && (
+            {collateralNum >= MIN_COLLATERAL && (
               <div className={styles.ratioPreview}>
                 <span>Max Debt at {protectionRatio}%</span>
                 <span className={styles.ratioPreviewValue}>{maxDebtAtThreshold.toFixed(2)} STT</span>
@@ -284,7 +282,7 @@ export default function OpenPositionModal({
 
           {/* Submit */}
           <div className={styles.minimumSummary}>
-            Minimum you can use now: {MIN_TOTAL_COLLATERAL} STT total ({(MIN_TOTAL_COLLATERAL - MIN_SUB_FUNDING).toFixed(2)} STT usable after subscription)
+            Monitoring is funded by the protocol, so 100% of your deposit is used as collateral.
           </div>
           <button
             type="submit"

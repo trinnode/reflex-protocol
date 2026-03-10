@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useAccount, useSwitchChain } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { formatEther } from "viem";
@@ -14,7 +14,7 @@ import OpenPositionModal from "@/components/position/OpenPositionModal";
 
 import { useReactivitySubscription } from "@/hooks/useReactivitySubscription";
 import { usePosition } from "@/hooks/usePosition";
-import { VAULT_ADDRESS, PRICE_UPDATED_TOPIC } from "@/lib/contracts";
+import { VAULT_ADDRESS } from "@/lib/contracts";
 import { somniaTestnet } from "@/lib/wagmi";
 import styles from "./page.module.css";
 
@@ -37,14 +37,13 @@ export default function PositionsPage() {
     openPosition,
     closePosition,
     topUpCollateral,
-    topUpSubscription,
+    monitoring,
     isPending,
     txError,
   } = usePosition(events);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [topUpAmount, setTopUpAmount] = useState("");
-  const [subTopUpAmount, setSubTopUpAmount] = useState("");
 
   useEffect(() => {
     if (txError) {
@@ -80,16 +79,6 @@ export default function PositionsPage() {
     topUpCollateral(topUpAmount);
     setTopUpAmount("");
     showToast("Collateral top up submitted", "info");
-  }
-
-  function handleTopUpSubscription() {
-    if (!subTopUpAmount || parseFloat(subTopUpAmount) <= 0) {
-      showToast("Please enter a valid amount", "error");
-      return;
-    }
-    topUpSubscription(subTopUpAmount);
-    setSubTopUpAmount("");
-    showToast("Subscription top up submitted", "info");
   }
 
   function getRatioColor(): string {
@@ -179,7 +168,7 @@ export default function PositionsPage() {
             <div>
               <h1 className={styles.pageTitle}>Positions</h1>
               <p className={styles.pageDesc}>
-                Manage your collateral positions, monitor health ratios, and configure protection settings.
+                Manage your collateral positions, monitor health ratios, and support the shared protocol monitoring pool.
               </p>
             </div>
             {!position && (
@@ -316,36 +305,22 @@ export default function PositionsPage() {
                   </div>
                 </div>
 
-                {/* Top Up Subscription */}
                 <div className={styles.actionCard}>
                   <h3 className={styles.actionTitle}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                       <path d="M21 12a9 9 0 11-6.219-8.56" />
                       <path d="M21 3v6h-6" />
                     </svg>
-                    Fund Subscription
+                    Shared Monitoring
                   </h3>
                   <p className={styles.actionDesc}>
-                    Add funds to your reactive subscription to ensure continuous position monitoring.
+                    Monitoring is managed through a protocol-wide Somnia subscription configured by the operator.
                   </p>
-                  <div className={styles.actionInput}>
-                    <input
-                      type="number"
-                      placeholder="Amount in STT"
-                      value={subTopUpAmount}
-                      onChange={(e) => setSubTopUpAmount(e.target.value)}
-                      className={styles.input}
-                      min="0"
-                      step="0.01"
-                    />
-                    <button
-                      className={styles.btnAction}
-                      onClick={handleTopUpSubscription}
-                      disabled={isPending}
-                    >
-                      {isPending ? "Processing..." : "Fund"}
-                    </button>
-                  </div>
+                  {monitoring && (
+                    <p className={styles.actionDesc}>
+                      Shared monitor #{monitoring.subscriptionId.toString()} is {monitoring.active ? "active" : "inactive"}.
+                    </p>
+                  )}
                 </div>
 
                 {/* Close Position */}
@@ -384,7 +359,7 @@ export default function PositionsPage() {
                     <span className={styles.detailValue}>{address?.slice(0, 8)}...{address?.slice(-6)}</span>
                   </div>
                   <div className={styles.detailRow}>
-                    <span className={styles.detailLabel}>Subscription ID</span>
+                    <span className={styles.detailLabel}>Monitoring ID</span>
                     <span className={styles.detailValue}>{position.subscriptionId.toString()}</span>
                   </div>
                   <div className={styles.detailRow}>
@@ -402,13 +377,19 @@ export default function PositionsPage() {
                   <div className={styles.detailRow}>
                     <span className={styles.detailLabel}>Monitoring</span>
                     <span className={styles.detailValue}>
-                      {wsConnected ? (
+                      {wsConnected && monitoring?.active ? (
                         <Badge variant="success" glow>Live</Badge>
                       ) : (
                         <Badge variant="neutral">Connecting...</Badge>
                       )}
                     </span>
                   </div>
+                  {monitoring && (
+                    <div className={styles.detailRow}>
+                      <span className={styles.detailLabel}>Subscription State</span>
+                      <span className={styles.detailValue}>{monitoring.active ? "Configured" : "Inactive"}</span>
+                    </div>
+                  )}
                   <div className={styles.detailRow}>
                     <span className={styles.detailLabel}>Reactive Events</span>
                     <span className={styles.detailValue}>{events.length} received</span>

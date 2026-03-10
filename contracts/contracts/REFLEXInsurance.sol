@@ -3,7 +3,6 @@ pragma solidity ^0.8.24;
 
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ISomniaReactivity} from "./interfaces/ISomniaReactivity.sol";
 import {SomniaEventHandler} from "./base/SomniaEventHandler.sol";
 
 /// @notice Autonomous insurance pool for REFLEX positions.
@@ -32,8 +31,6 @@ contract REFLEXInsurance is SomniaEventHandler, ReentrancyGuard, Ownable {
     // Cap single payout at 10% of pool so one large claim can't drain reserves.
     uint256 private constant MAX_PAYOUT_POOL_FRACTION = 10;
 
-    uint256 private constant MIN_SUB_FUNDING = 2 ether;
-
     // ─── State ───────────────────────────────────────────────────────────────
 
     address public vault;
@@ -51,41 +48,18 @@ contract REFLEXInsurance is SomniaEventHandler, ReentrancyGuard, Ownable {
     /// @param _reactivityPrecompile Somnia Reactivity Precompile address
     ///                              (0x0100 on mainnet; mock address in tests).
     constructor(address _vault, address _reactivityPrecompile)
-        payable
         SomniaEventHandler(_reactivityPrecompile)
         Ownable(msg.sender)
     {
         vault = _vault;
-
-        // If value is sent AND the precompile is callable, subscribe eagerly.
-        // Otherwise the owner can call initializeSubscription() post-deploy.
-        if (msg.value >= MIN_SUB_FUNDING) {
-            _trySubscribe(msg.value);
-        }
     }
 
     // ─── Subscription setup ──────────────────────────────────────────────────
 
-    /// @notice Owner-callable lazy initialization for the Reactivity subscription.
-    ///         Use this if the constructor could not subscribe (e.g. precompile
-    ///         not yet live on the current network).
-    function initializeSubscription() external payable onlyOwner {
-        require(!subscriptionInitialized, "Already subscribed");
-        require(msg.value >= MIN_SUB_FUNDING, "Must fund subscription");
-        _trySubscribe(msg.value);
-    }
-
-    function _trySubscribe(uint256 funding) internal {
-        uint256 subId = ISomniaReactivity(PRECOMPILE_ADDRESS).subscribe{value: funding}(
-            vault,                       // emitterFilter: only vault events
-            PROTECTION_TRIGGERED_TOPIC,  // topicFilter
-            address(0),                  // originFilter: any
-            address(0),                  // callerFilter: any
-            address(this),               // handler: this contract
-            true,                        // isGuaranteed
-            false                        // isCoalesced: one call per event
-        );
-
+    /// @notice Records the live Reactivity subscription created by the
+    ///         protocol operator for insurance payouts.
+    function configureSubscription(uint256 subId) external onlyOwner {
+        require(subId > 0, "Invalid subscription");
         subscriptionIds[subId] = true;
         subscriptionInitialized = true;
     }
@@ -132,11 +106,12 @@ contract REFLEXInsurance is SomniaEventHandler, ReentrancyGuard, Ownable {
     /// unwind the vault's own _onEvent handler — silently breaking protection
     /// for all users. Every failure path must be an early return, not a revert.
     function _onEvent(
-        uint256, /* subscriptionId — single subscription, no lookup needed */
-        address, /* emitter — already filtered to vault by subscription */
+        address emitter,
         bytes32[] calldata topics,
         bytes calldata /* data — ratio and price not needed for payout */
     ) internal override {
+        if (!subscriptionInitialized || emitter != vault) return;
+
         // ProtectionTriggered(address indexed user, uint256 ratio, uint256 price)
         // The indexed 'user' lives in topics[1], NOT in the data payload.
         // topics[0] = event signature hash (already matched by subscription filter)

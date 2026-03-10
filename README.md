@@ -74,8 +74,8 @@ All contracts are deployed and verified on Somnia Shannon Testnet (Chain ID 5031
 | Contract | Address | Explorer |
 |----------|---------|----------|
 | PriceOracle | `0xE85e5ac4F5Ac9987E28304d8f427f1ca6746a3E0` | [View](https://shannon-explorer.somnia.network/address/0xE85e5ac4F5Ac9987E28304d8f427f1ca6746a3E0#code) |
-| REFLEXVault | `0x3d6e960110127699Db15052b434De05fd3A7D2A2` | [View](https://shannon-explorer.somnia.network/address/0x3d6e960110127699Db15052b434De05fd3A7D2A2#code) |
-| REFLEXInsurance | `0xC36547153ef2482D33B786d3dD68a711324BD2bD` | [View](https://shannon-explorer.somnia.network/address/0xC36547153ef2482D33B786d3dD68a711324BD2bD#code) |
+| REFLEXVault | `0x34C72450cC4a34Cf0BD4c24dDa64310c96CFd001` | [View](https://shannon-explorer.somnia.network/address/0x34C72450cC4a34Cf0BD4c24dDa64310c96CFd001#code) |
+| REFLEXInsurance | `0xDd49a6BbB1b84b5BE744b3Ef7618783F41f0EBAD` | [View](https://shannon-explorer.somnia.network/address/0xDd49a6BbB1b84b5BE744b3Ef7618783F41f0EBAD#code) |
 
 
 ## Frontend Application
@@ -86,7 +86,7 @@ The frontend is a full featured Next.js 14 application with multiple pages:
 
 **Dashboard** at `/dashboard` gives you a real time view of your position status, live price feeds streamed through Somnia's WebSocket RPC, reactive event logs, and insurance status.
 
-**Positions** at `/positions` is where you open, manage, and close positions. It shows your collateral health ratio with a visual bar, lets you add collateral or fund your reactive subscription, and displays detailed position metadata including your subscription ID and the timestamp when you opened.
+**Positions** at `/positions` is where you open, manage, and close positions. It shows your collateral health ratio with a visual bar, lets you add collateral or support the shared monitoring pool, and displays detailed position metadata including your monitoring ID and the timestamp when you opened.
 
 **Insurance** at `/insurance` lets you browse coverage tiers and purchase insurance. When your position triggers protection, the payout is sent to your wallet automatically.
 

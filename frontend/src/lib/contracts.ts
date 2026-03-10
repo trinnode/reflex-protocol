@@ -9,8 +9,8 @@ export const CHAIN_ID = 50312;
 
 export const CONTRACTS = {
   PriceOracle: "0xE85e5ac4F5Ac9987E28304d8f427f1ca6746a3E0",
-  REFLEXVault: "0x3d6e960110127699Db15052b434De05fd3A7D2A2",
-  REFLEXInsurance: "0xC36547153ef2482D33B786d3dD68a711324BD2bD",
+  REFLEXVault: "0x34C72450cC4a34Cf0BD4c24dDa64310c96CFd001",
+  REFLEXInsurance: "0xDd49a6BbB1b84b5BE744b3Ef7618783F41f0EBAD",
   SomniaReactivityPrecompile: "0x0000000000000000000000000000000000000100",
 } as const;
 
@@ -57,6 +57,16 @@ export const VAULT_ABI = [
     inputs: [],
     outputs: [{ name: "", type: "address" }],
   },
+  {
+    type: "function",
+    name: "getSharedSubscriptionStatus",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [
+      { name: "subscriptionId", type: "uint256" },
+      { name: "active", type: "bool" },
+    ],
+  },
   // write
   {
     type: "function",
@@ -82,13 +92,6 @@ export const VAULT_ABI = [
     inputs: [],
     outputs: [],
   },
-  {
-    type: "function",
-    name: "topUpSubscription",
-    stateMutability: "payable",
-    inputs: [],
-    outputs: [],
-  },
   // events
   {
     type: "event",
@@ -97,6 +100,7 @@ export const VAULT_ABI = [
       { name: "user", type: "address", indexed: true },
       { name: "collateral", type: "uint256", indexed: false },
       { name: "debt", type: "uint256", indexed: false },
+      { name: "subscriptionId", type: "uint256", indexed: false },
     ],
   },
   {

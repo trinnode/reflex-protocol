@@ -12,6 +12,9 @@ abstract contract SomniaEventHandler {
     // verify that an incoming handleEvent call belongs to a known subscription.
     mapping(uint256 => bool) public subscriptionIds;
 
+    bytes4 public constant ON_EVENT_SELECTOR =
+        bytes4(keccak256("onEvent(address,bytes32[],bytes)"));
+
     error UnauthorizedCaller(address caller);
 
     constructor(address _precompileAddress) {
@@ -26,24 +29,17 @@ abstract contract SomniaEventHandler {
     }
 
     // Called by the Reactivity Precompile when a subscribed event fires.
-    // subscriptionId identifies which subscription triggered this invocation,
-    // allowing inheritors to map back to their internal state (e.g. user lookup).
-    function handleEvent(
-        uint256 subscriptionId,
+    function onEvent(
         address emitter,
-        bytes32[] calldata topics,
+        bytes32[] calldata eventTopics,
         bytes calldata data
     ) external onlyPrecompile {
-        _onEvent(subscriptionId, emitter, topics, data);
+        _onEvent(emitter, eventTopics, data);
     }
 
-    // Inheritors implement their reaction logic here.
-    // subscriptionId is forwarded so handlers can resolve context
-    // (e.g. which user's position this event relates to).
     function _onEvent(
-        uint256 subscriptionId,
         address emitter,
-        bytes32[] calldata topics,
+        bytes32[] calldata eventTopics,
         bytes calldata data
     ) internal virtual;
 }

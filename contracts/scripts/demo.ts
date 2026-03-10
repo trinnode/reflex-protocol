@@ -62,7 +62,7 @@ async function main() {
     const currentPrice = await oracle.getPrice();
     const ratio =
       pos.debt > 0n
-        ? Number((pos.collateral * currentPrice) / (pos.debt * ethers.parseEther("1")) * 100n)
+        ? Number((pos.collateral * currentPrice * 100n) / (pos.debt * ethers.parseEther("1")))
         : 999;
     log(`Current collateral ratio: ${ratio}%`);
     log("");
@@ -71,7 +71,7 @@ async function main() {
   // 4. Open position if none exists
   if (!pos.active) {
     log("--- OPENING POSITION ---");
-    // 50 STT total (32 for subscription + 18 for collateral)
+    // 50 STT collateral — monitoring is funded by the protocol-wide subscription.
     const collateral = ethers.parseEther("50");
     const debt = ethers.parseEther("10");
     const protectionRatio = 150n;
@@ -143,7 +143,7 @@ async function main() {
       const ratioAfter =
         posAfterDrop.debt > 0n
           ? Number(
-              (posAfterDrop.collateral * priceAfter * 100n) /
+              (posAfterDrop.collateral * BigInt(priceAfter) * 100n) /
                 (posAfterDrop.debt * ethers.parseEther("1"))
             )
           : 999;
@@ -206,7 +206,7 @@ async function main() {
       const ratioFinal =
         posAfterCritical.debt > 0n
           ? Number(
-              (posAfterCritical.collateral * priceAfterCritical * 100n) /
+              (posAfterCritical.collateral * BigInt(priceAfterCritical) * 100n) /
                 (posAfterCritical.debt * ethers.parseEther("1"))
             )
           : 999;

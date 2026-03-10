@@ -17,6 +17,11 @@ export interface PositionData {
   protectionRatio: bigint;
 }
 
+export interface MonitoringData {
+  subscriptionId: bigint;
+  active: boolean;
+}
+
 export interface UsePositionReturn {
   position: PositionData | null;
   isLoading: boolean;
@@ -27,7 +32,7 @@ export interface UsePositionReturn {
   ) => void;
   closePosition: () => void;
   topUpCollateral: (amount: string) => void;
-  topUpSubscription: (amount: string) => void;
+  monitoring: MonitoringData | null;
   isPending: boolean;
   txError: string | null;
   refetch: () => void;
@@ -53,6 +58,16 @@ export function usePosition(
     query: {
       enabled: !!address,
       refetchInterval: 10_000, // 10s polling
+    },
+  });
+
+  const { data: rawMonitoring } = useReadContract({
+    address: VAULT_ADDRESS,
+    abi: VAULT_ABI,
+    functionName: "getSharedSubscriptionStatus",
+    query: {
+      enabled: true,
+      refetchInterval: 10_000,
     },
   });
 
@@ -85,6 +100,16 @@ export function usePosition(
       protectionRatio: raw[5],
     };
     return parsed.active ? parsed : null;
+  })();
+
+  const monitoring: MonitoringData | null = (() => {
+    if (!rawMonitoring) return null;
+
+    const raw = rawMonitoring as readonly [bigint, boolean];
+    return {
+      subscriptionId: raw[0],
+      active: raw[1],
+    };
   })();
 
   // ── Write functions ────────────────────────────────────
@@ -130,25 +155,13 @@ export function usePosition(
     [writeContract]
   );
 
-  const topUpSubscription = useCallback(
-    (amount: string) => {
-      writeContract({
-        address: VAULT_ADDRESS,
-        abi: VAULT_ABI,
-        functionName: "topUpSubscription",
-        value: parseEther(amount),
-      });
-    },
-    [writeContract]
-  );
-
   return {
     position,
     isLoading,
     openPosition,
     closePosition,
     topUpCollateral,
-    topUpSubscription,
+    monitoring,
     isPending,
     txError,
     refetch,

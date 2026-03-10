@@ -11,14 +11,14 @@ const SECTIONS = [
     title: "What is REFLEX?",
     content: `REFLEX Protocol is an autonomous DeFi position protection system built on the Somnia blockchain. It uses Somnia's unique Reactivity framework to monitor collateral positions in real time and trigger protective actions the moment conditions change, all without requiring any manual intervention, keeper bots, or off chain infrastructure.
 
-When you open a position on REFLEX, the protocol registers a reactive subscription that watches the price oracle. If the price moves in a way that puts your collateral ratio at risk, the protocol automatically closes your position and returns your remaining collateral. This happens in under a second, faster than any traditional DeFi monitoring solution.`,
+  REFLEX now uses a protocol-funded shared monitoring subscription. When you open a position, your entire deposit stays as collateral instead of being split between collateral and a separate monitoring fee. If the price moves in a way that puts your collateral ratio at risk, the protocol automatically closes your position and returns your remaining collateral. This happens in under a second, faster than any traditional DeFi monitoring solution.`,
   },
   {
     id: "reactivity",
     title: "Somnia Reactivity",
     content: `Somnia Reactivity is a new blockchain primitive that allows smart contracts to subscribe to on chain events and react to them automatically. Unlike traditional EVM blockchains where all execution must be triggered by an external transaction, Somnia lets contracts register subscriptions that fire callbacks when specific events occur.
 
-REFLEX uses this by subscribing to the PriceUpdated event emitted by the PriceOracle contract. Every time the oracle price changes, the REFLEXVault contract is notified through the reactive callback. It then checks every active position to see if the collateral ratio has fallen below the user's protection threshold. If it has, the vault triggers an emergency exit and returns collateral to the user's wallet.
+REFLEX uses this by subscribing once to the PriceUpdated event emitted by the PriceOracle contract. Every time the oracle price changes, the REFLEXVault contract is notified through the reactive callback. It then checks every active position to see if the collateral ratio has fallen below the user's protection threshold. If it has, the vault triggers an emergency exit and returns collateral to the user's wallet.
 
 This approach eliminates the need for keeper networks, off chain monitoring scripts, and centralized infrastructure. Everything happens on chain with sub second latency.`,
   },
@@ -29,7 +29,7 @@ This approach eliminates the need for keeper networks, off chain monitoring scri
 
 The collateral is the amount of STT tokens you deposit as backing. The debt represents the amount you are borrowing against your collateral. The protection ratio is the threshold at which the protocol will automatically close your position to protect you from further losses. For example, a protection ratio of 130 means the protocol will trigger protection if your collateral to debt ratio drops below 130%.
 
-Once your position is open, you can add more collateral at any time to improve your health ratio. You can also fund your reactive subscription to ensure continuous monitoring. When you are ready to close your position, you can do so manually and receive your remaining collateral back.`,
+Once your position is open, you can add more collateral at any time to improve your health ratio. If you want to help keep monitoring funded for all users, you can contribute to the shared monitoring pool from the Positions page. When you are ready to close your position, you can do so manually and receive your remaining collateral back.`,
   },
   {
     id: "insurance",
@@ -47,9 +47,9 @@ Coverage is active immediately after purchase and remains valid as long as your 
 
 PriceOracle: Production on chain price feed contract. It emits PriceUpdated events whenever the price changes and includes heartbeat, deviation, and updater controls for safer operation.
 
-REFLEXVault: The core vault contract. It holds user collateral, manages positions, and handles the reactive subscription logic. When it receives a reactive callback from the price oracle, it iterates through active positions and checks their health ratios against the current price. Positions below their protection threshold are automatically closed.
+REFLEXVault: The core vault contract. It holds user collateral, manages positions, and handles the protocol-wide reactive subscription logic. When it receives a reactive callback from the price oracle, it iterates through active positions and checks their health ratios against the current price. Positions below their protection threshold are automatically closed.
 
-REFLEXInsurance: An optional companion contract. Users can purchase coverage by calling purchaseCoverage with their desired amount. The vault contract calls into the insurance contract during protection triggers to distribute payouts.
+REFLEXInsurance: An optional companion contract. Users can purchase coverage by calling purchaseCoverage with their desired amount. The insurance contract subscribes to the vault's ProtectionTriggered events and pays covered users automatically when protection fires.
 
 All three contracts are verified on the Shannon Explorer and their source code is publicly available.`,
   },

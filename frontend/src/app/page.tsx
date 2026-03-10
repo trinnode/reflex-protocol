@@ -88,7 +88,7 @@ const STEPS = [
     number: "02",
     title: "Open a Position",
     description:
-      "Deposit collateral and set your desired protection ratio. The protocol immediately registers a reactive subscription to monitor your position around the clock.",
+      "Deposit collateral and set your desired protection ratio. The protocol-wide monitoring subscription is already funded, so your full deposit stays in your position.",
   },
   {
     number: "03",
@@ -239,7 +239,7 @@ export default function HomePage() {
           <p className={styles.heroSubtitle}>
             REFLEX monitors your collateral positions in real time and triggers protective
             actions autonomously when conditions change. Powered by Somnia&apos;s
-            sub second reactive primitives, your assets are always watched, always protected.
+            sub second reactive primitives, your assets are always watched, always protected, without charging a separate monitoring deposit per position.
           </p>
           <div className={styles.heroCtas}>
             {mounted && isConnected ? (

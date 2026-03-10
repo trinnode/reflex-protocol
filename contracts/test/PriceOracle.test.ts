@@ -17,7 +17,7 @@ async function deployFixture() {
 
   const oracle = await (
     await ethers.getContractFactory("PriceOracle")
-  ).deploy(HEARTBEAT, MAX_DEVIATION_BPS, MIN_INTERVAL) as PriceOracle;
+  ).deploy(HEARTBEAT, MAX_DEVIATION_BPS, MIN_INTERVAL) as unknown as PriceOracle;
 
   return { oracle, owner, updater, alice };
 }

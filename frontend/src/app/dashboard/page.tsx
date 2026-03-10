@@ -69,7 +69,7 @@ export default function DashboardPage() {
     openPosition,
     closePosition,
     topUpCollateral,
-    topUpSubscription,
+    monitoring,
     isPending,
     txError,
     refetch: refetchPosition,
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                   : "NONE"}
               </span>
               <span className={styles.statCardFooter}>
-                {position ? "Reactive protection enabled" : "Open a position to start"}
+                {position ? "Shared monitoring active" : "Open a position to start"}
               </span>
               <div
                 className={styles.statCardAccent}
