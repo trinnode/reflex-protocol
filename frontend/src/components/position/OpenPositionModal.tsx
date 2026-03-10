@@ -21,7 +21,8 @@ const PRESETS = [
   { label: "Aggressive", value: 125, color: "#F97316", icon: "⚡" },
 ] as const;
 
-const MIN_COLLATERAL = 2;
+const MIN_SUB_FUNDING = 2;
+const MIN_TOTAL_COLLATERAL = 2.01;
 const MIN_OPEN_RATIO = 140;
 
 // ── Component ────────────────────────────────────────────
@@ -61,12 +62,13 @@ export default function OpenPositionModal({
 
   const collateralNum = parseFloat(collateral) || 0;
   const debtNum = parseFloat(debt) || 0;
+  const netCollateralNum = Math.max(collateralNum - MIN_SUB_FUNDING, 0);
   const computedRatio =
-    debtNum > 0 ? Math.round((collateralNum / debtNum) * 100) : 0;
+    debtNum > 0 ? Math.round((netCollateralNum / debtNum) * 100) : 0;
 
   const collateralError =
-    collateral && collateralNum < MIN_COLLATERAL
-      ? `Minimum ${MIN_COLLATERAL} STT required`
+    collateral && collateralNum < MIN_TOTAL_COLLATERAL
+      ? `Minimum ${MIN_TOTAL_COLLATERAL} STT required`
       : null;
 
   const debtError =
@@ -76,7 +78,7 @@ export default function OpenPositionModal({
 
   const hasErrors = !!(collateralError || debtError);
   const isValid =
-    collateralNum >= MIN_COLLATERAL &&
+    collateralNum >= MIN_TOTAL_COLLATERAL &&
     debtNum > 0 &&
     computedRatio >= MIN_OPEN_RATIO &&
     !hasErrors;
@@ -149,7 +151,7 @@ export default function OpenPositionModal({
                 className={styles.input}
                 type="number"
                 step="0.01"
-                min="0"
+                min={String(MIN_TOTAL_COLLATERAL)}
                 placeholder="0.00"
                 value={collateral}
                 onChange={(e) => setCollateral(e.target.value)}
@@ -157,7 +159,7 @@ export default function OpenPositionModal({
               />
             </div>
             <span className={styles.hint}>
-              Min {MIN_COLLATERAL} STT (includes 2 STT for reactive subscription)
+              Min {MIN_TOTAL_COLLATERAL} STT total (includes {MIN_SUB_FUNDING} STT for reactive subscription)
             </span>
             {collateralError && (
               <span className={styles.errorMsg}>{collateralError}</span>
