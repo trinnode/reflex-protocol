@@ -80,9 +80,9 @@
 }
 
 .info {
-  border-color: rgba(168, 85, 247, 0.3);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 .info .icon {
-  background: rgba(168, 85, 247, 0.12);
+  background: rgba(220, 38, 38, 0.12);
   color: var(--color-accent);
 }

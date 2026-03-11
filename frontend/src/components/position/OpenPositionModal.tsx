@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { useGasPrice } from "wagmi";
+import { formatGwei } from "viem";
 import styles from "./OpenPositionModal.module.css";
 
 // ── Types ────────────────────────────────────────────────
@@ -11,6 +13,7 @@ interface OpenPositionModalProps {
   onSubmit: (collateral: string, debt: string, protectionRatio: number) => void;
   isLoading: boolean;
   error: string | null;
+  monitoringActive?: boolean;
 }
 
 // ── Presets ──────────────────────────────────────────────
@@ -36,10 +39,20 @@ export default function OpenPositionModal({
   onSubmit,
   isLoading,
   error,
+  monitoringActive = true,
 }: OpenPositionModalProps) {
   const [collateral, setCollateral] = useState("");
   const [debt, setDebt] = useState("");
   const [protectionRatio, setProtectionRatio] = useState(150);
+
+  // Gas price estimation
+  const { data: gasPrice } = useGasPrice({ query: { refetchInterval: 15_000 } });
+  const gasPriceFormatted = gasPrice ? formatGwei(gasPrice) : null;
+  // Estimate tx cost: ~250k gas for openPosition (conservative upper bound)
+  const estimatedGasCost = gasPrice ? (gasPrice * 250_000n) : null;
+  const gasCostSTT = estimatedGasCost
+    ? (Number(estimatedGasCost) / 1e18).toFixed(6)
+    : null;
 
   useEffect(() => {
     if (isOpen) {
@@ -281,13 +294,37 @@ export default function OpenPositionModal({
           </div>
 
           {/* Submit */}
+          {!monitoringActive && (
+            <div className={styles.formError} style={{ borderColor: 'rgba(249, 115, 22, 0.3)', background: 'rgba(249, 115, 22, 0.08)', color: '#F97316' }}>
+              Monitoring subscription is not yet configured by the protocol operator. Position opening is temporarily unavailable.
+            </div>
+          )}
+
+          {/* Gas estimate */}
+          {gasPriceFormatted && (
+            <div className={styles.ratioPreview} style={{ marginBottom: 4 }}>
+              <span>Gas Price</span>
+              <span className={styles.ratioPreviewValue} style={{ fontSize: '0.75rem' }}>
+                {parseFloat(gasPriceFormatted).toFixed(2)} Gwei
+              </span>
+            </div>
+          )}
+          {gasCostSTT && (
+            <div className={styles.ratioPreview} style={{ marginBottom: 8 }}>
+              <span>Est. Gas Fee</span>
+              <span className={styles.ratioPreviewValue} style={{ fontSize: '0.75rem', color: 'var(--color-accent-secondary)' }}>
+                ~{gasCostSTT} STT
+              </span>
+            </div>
+          )}
+
           <div className={styles.minimumSummary}>
             Monitoring is funded by the protocol, so 100% of your deposit is used as collateral.
           </div>
           <button
             type="submit"
             className={styles.submitBtn}
-            disabled={!isValid || isLoading}
+            disabled={!isValid || isLoading || !monitoringActive}
           >
             {isLoading ? (
               <span className={styles.spinner} />
