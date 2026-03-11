@@ -5,6 +5,7 @@ import { WagmiProvider, type State } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import { config } from "@/lib/wagmi";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ export default function Web3Provider({
             fontStack: "system",
           })}
         >
+          <ScrollProgress />
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
