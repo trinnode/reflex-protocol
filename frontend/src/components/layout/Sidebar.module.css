@@ -39,8 +39,8 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(123, 47, 190, 0.2), rgba(59, 130, 246, 0.1));
-  border: 1px solid rgba(168, 85, 247, 0.2);
+  background: linear-gradient(135deg, rgba(153, 27, 27, 0.2), rgba(249, 115, 22, 0.1));
+  border: 1px solid rgba(220, 38, 38, 0.2);
   animation: breathe 4s ease-in-out infinite;
 }
 
@@ -110,7 +110,7 @@
 
 .navItemActive {
   composes: navItem;
-  background: rgba(168, 85, 247, 0.08);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--color-text-primary);
 }
 
@@ -126,7 +126,7 @@
 }
 
 .navItemActive .navIcon {
-  background: rgba(168, 85, 247, 0.15);
+  background: rgba(220, 38, 38, 0.15);
   color: var(--color-accent);
 }
 
@@ -145,7 +145,7 @@
   height: 20px;
   border-radius: 0 var(--radius-full) var(--radius-full) 0;
   background: var(--gradient-brand);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
 }
 
 /* ── Bottom Section ───────────────────────────────────── */

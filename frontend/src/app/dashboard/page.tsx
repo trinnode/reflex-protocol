@@ -568,6 +568,7 @@ export default function DashboardPage() {
         onSubmit={handleOpenPosition}
         isLoading={isPending}
         error={txError}
+        monitoringActive={monitoring?.active ?? false}
       />
 
       {/* Toasts */}

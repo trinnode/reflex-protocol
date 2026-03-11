@@ -62,7 +62,10 @@ export default function PriceFeedWidget({ prices }: PriceFeedWidgetProps) {
             <polyline points="16,7 22,7 22,13" />
           </svg>
         </div>
-        <span>Waiting for price data...</span>
+        <span>No price data available yet</span>
+        <span style={{ fontSize: '0.625rem', color: 'var(--color-text-dim)', textAlign: 'center', maxWidth: 260 }}>
+          The oracle updates when a price is set on-chain. Connect to Somnia Testnet and ensure the oracle has been initialized.
+        </span>
       </div>
     );
   }

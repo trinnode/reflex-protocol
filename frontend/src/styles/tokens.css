@@ -1,32 +1,32 @@
 /* ═══════════════════════════════════════════════════════════
    REFLEX Protocol — Design Tokens
-   A dark, glass-morphism DeFi design system
+   Dark theme: black bg, dark red + orange accents, white text
    ═══════════════════════════════════════════════════════════ */
 
 :root {
   /* ── Backgrounds ──────────────────────────────────────── */
-  --color-bg:          #06060B;
-  --color-bg-app:      #0A0A12;
-  --color-bg-elevated: #0E0D18;
-  --color-bg-card:     rgba(255, 255, 255, 0.025);
-  --color-bg-card-solid: #111019;
-  --color-bg-input:    rgba(0, 0, 0, 0.35);
+  --color-bg:          #000000;
+  --color-bg-app:      #050505;
+  --color-bg-elevated: #0A0A0A;
+  --color-bg-card:     rgba(255, 255, 255, 0.02);
+  --color-bg-card-solid: #0D0D0D;
+  --color-bg-input:    rgba(0, 0, 0, 0.5);
   --color-bg-hover:    rgba(255, 255, 255, 0.04);
 
   /* ── Borders ──────────────────────────────────────────── */
   --color-border:        rgba(255, 255, 255, 0.06);
   --color-border-subtle: rgba(255, 255, 255, 0.04);
-  --color-border-active: rgba(168, 85, 247, 0.3);
-  --color-border-glow:   rgba(168, 85, 247, 0.15);
+  --color-border-active: rgba(220, 38, 38, 0.3);
+  --color-border-glow:   rgba(220, 38, 38, 0.15);
 
   /* ── Brand ────────────────────────────────────────────── */
-  --color-purple:     #7B2FBE;
-  --color-accent:     #A855F7;
-  --color-lavender:   #C084FC;
-  --color-blue:       #3B82F6;
-  --gradient-brand:   linear-gradient(135deg, #7B2FBE 0%, #A855F7 50%, #3B82F6 100%);
-  --gradient-brand-h: linear-gradient(90deg, #7B2FBE 0%, #A855F7 50%, #3B82F6 100%);
-  --gradient-glow:    linear-gradient(135deg, rgba(123, 47, 190, 0.4) 0%, rgba(59, 130, 246, 0.2) 100%);
+  --color-purple:     #991B1B;
+  --color-accent:     #DC2626;
+  --color-lavender:   #F97316;
+  --color-blue:       #EA580C;
+  --gradient-brand:   linear-gradient(135deg, #991B1B 0%, #DC2626 50%, #F97316 100%);
+  --gradient-brand-h: linear-gradient(90deg, #991B1B 0%, #DC2626 50%, #F97316 100%);
+  --gradient-glow:    linear-gradient(135deg, rgba(153, 27, 27, 0.4) 0%, rgba(249, 115, 22, 0.2) 100%);
 
   /* ── Text ─────────────────────────────────────────────── */
   --color-text:          #F0F0F5;
@@ -42,12 +42,12 @@
   --color-warn-muted:    rgba(245, 158, 11, 0.12);
   --color-danger:        #EF4444;
   --color-danger-muted:  rgba(239, 68, 68, 0.10);
-  --color-info:          #3B82F6;
-  --color-info-muted:    rgba(59, 130, 246, 0.12);
+  --color-info:          #EA580C;
+  --color-info-muted:    rgba(234, 88, 12, 0.12);
 
   /* ── Typography ───────────────────────────────────────── */
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'Inter', sans-serif;
+  --font-display: 'Space Mono', monospace;
+  --font-body:    'Space Grotesk', sans-serif;
   --font-mono:    'JetBrains Mono', monospace;
 
   /* ── Type Scale ───────────────────────────────────────── */
@@ -88,12 +88,12 @@
   --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(168, 85, 247, 0.12), 0 0 80px rgba(168, 85, 247, 0.06);
+  --shadow-glow: 0 0 40px rgba(220, 38, 38, 0.12), 0 0 80px rgba(220, 38, 38, 0.06);
   --shadow-card: 0 0 0 1px var(--color-border), 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-card-hover: 0 0 0 1px var(--color-border-active), 0 8px 32px rgba(0, 0, 0, 0.4), var(--shadow-glow);
 
   /* ── Glass ────────────────────────────────────────────── */
-  --glass-bg:     rgba(255, 255, 255, 0.025);
+  --glass-bg:     rgba(255, 255, 255, 0.02);
   --glass-border: rgba(255, 255, 255, 0.06);
   --glass-blur:   16px;
 

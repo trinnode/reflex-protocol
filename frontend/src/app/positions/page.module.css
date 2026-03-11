@@ -54,7 +54,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.2);
   animation: breathe 3s ease-in-out infinite;
 }
 
@@ -92,7 +92,7 @@
 
 .btnSwitch:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(123, 47, 190, 0.3);
+  box-shadow: 0 8px 32px rgba(153, 27, 27, 0.3);
 }
 
 .btnConnect {
@@ -115,12 +115,12 @@
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-out);
   animation: gradientShift 4s ease infinite;
-  box-shadow: 0 4px 24px rgba(123, 47, 190, 0.25);
+  box-shadow: 0 4px 24px rgba(153, 27, 27, 0.25);
 }
 
 .btnConnect:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(123, 47, 190, 0.4);
+  box-shadow: 0 8px 40px rgba(153, 27, 27, 0.4);
 }
 
 .guardHomeLink {
@@ -180,7 +180,7 @@
 
 .btnOpen:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(123, 47, 190, 0.3);
+  box-shadow: 0 8px 32px rgba(153, 27, 27, 0.3);
 }
 
 /* ── Status Grid ──────────────────────────────────────── */
@@ -393,7 +393,7 @@
 
 .input:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .btnAction {
@@ -405,8 +405,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-accent);
-  background: rgba(168, 85, 247, 0.08);
-  border: 1px solid rgba(168, 85, 247, 0.2);
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.2);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
@@ -414,8 +414,8 @@
 }
 
 .btnAction:hover:not(:disabled) {
-  background: rgba(168, 85, 247, 0.15);
-  border-color: rgba(168, 85, 247, 0.4);
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.4);
 }
 
 .btnAction:disabled {
