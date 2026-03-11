@@ -23,10 +23,10 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(168, 85, 247, 0.2) 0%,
+    rgba(220, 38, 38, 0.2) 0%,
     transparent 40%,
     transparent 60%,
-    rgba(59, 130, 246, 0.15) 100%
+    rgba(249, 115, 22, 0.15) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -123,7 +123,7 @@
 }
 
 .healthLabelAccent {
-  color: rgba(168, 85, 247, 0.6);
+  color: rgba(220, 38, 38, 0.6);
 }
 
 .healthTrack {
@@ -169,7 +169,7 @@
 }
 
 .markerProtection {
-  border-left: 2px dashed rgba(168, 85, 247, 0.4);
+  border-left: 2px dashed rgba(220, 38, 38, 0.4);
 }
 
 /* ── Stats Grid ───────────────────────────────────────── */
@@ -256,19 +256,19 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: rgba(168, 85, 247, 0.08);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--color-accent);
-  border: 1px solid rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.2);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .btnTopUp:hover {
-  background: rgba(168, 85, 247, 0.15);
-  border-color: rgba(168, 85, 247, 0.4);
+  background: rgba(220, 38, 38, 0.15);
+  border-color: rgba(220, 38, 38, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.15);
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.15);
 }
 
 .btnClose {
@@ -323,7 +323,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1px solid rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.2);
   animation: breathe 3s ease-in-out infinite;
 }
 
@@ -331,7 +331,7 @@
   position: absolute;
   inset: -8px;
   border-radius: 50%;
-  border: 1px solid rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.08);
   animation: breathe 3s ease-in-out infinite 0.5s;
 }
 
@@ -385,7 +385,7 @@
 
 .btnOpen:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(123, 47, 190, 0.3);
+  box-shadow: 0 8px 32px rgba(153, 27, 27, 0.3);
 }
 
 /* ── Responsive ───────────────────────────────────────── */

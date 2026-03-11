@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════════════════
+   ScrollProgress — Top-of-viewport scroll indicator
+   ═══════════════════════════════════════════════════════════ */
+
+.track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent, #DC2626) 0%,
+    var(--color-accent-secondary, #F97316) 60%,
+    var(--color-warn, #F59E0B) 100%
+  );
+  border-radius: 0 2px 2px 0;
+  transition: width 0.08s linear;
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.5), 0 0 2px rgba(249, 115, 22, 0.4);
+  will-change: width;
+}
+
+.label {
+  position: fixed;
+  top: 5px;
+  right: 12px;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+  z-index: 10000;
+  transition: opacity 0.2s ease;
+  user-select: none;
+}
+
+/* ── Mobile ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .track {
+    height: 2px;
+  }
+
+  .label {
+    font-size: 0.55rem;
+    right: 8px;
+    top: 4px;
+    padding: 1px 5px;
+  }
+}
+
+/* ── Hide label when scrollbar at 0% ──────────────────── */
+
+.label:empty {
+  display: none;
+}

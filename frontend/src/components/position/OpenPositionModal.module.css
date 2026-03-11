@@ -41,10 +41,10 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(168, 85, 247, 0.3) 0%,
+    rgba(220, 38, 38, 0.3) 0%,
     transparent 30%,
     transparent 70%,
-    rgba(59, 130, 246, 0.2) 100%
+    rgba(249, 115, 22, 0.2) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -146,8 +146,8 @@
   height: 28px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(168, 85, 247, 0.35);
-  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.08);
   color: var(--color-text-primary);
   font-family: var(--font-mono);
   font-size: var(--text-2xs);
@@ -159,8 +159,8 @@
 }
 
 .quickFillBtn:hover:not(:disabled) {
-  border-color: rgba(168, 85, 247, 0.6);
-  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(220, 38, 38, 0.6);
+  background: rgba(220, 38, 38, 0.14);
 }
 
 .quickFillBtn:disabled {
@@ -192,7 +192,7 @@
 
 .input:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .input:disabled {
@@ -262,14 +262,14 @@
   background: var(--color-accent);
   border: 2px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
   transition: transform var(--duration-fast) var(--ease-out),
               box-shadow var(--duration-fast) var(--ease-out);
 }
 
 .slider::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
 }
 
 .slider::-moz-range-thumb {
@@ -279,7 +279,7 @@
   background: var(--color-accent);
   border: 2px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
 }
 
 /* ── Presets ───────────────────────────────────────────── */
@@ -310,9 +310,9 @@
 }
 
 .presetActive {
-  background: rgba(168, 85, 247, 0.08);
-  border-color: rgba(168, 85, 247, 0.3);
-  box-shadow: 0 0 12px rgba(168, 85, 247, 0.1);
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.3);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.1);
 }
 
 .presetIcon {
@@ -372,7 +372,7 @@
 
 .submitBtn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(123, 47, 190, 0.3);
+  box-shadow: 0 8px 32px rgba(153, 27, 27, 0.3);
 }
 
 .submitBtn:disabled {

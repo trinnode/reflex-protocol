@@ -430,6 +430,7 @@ export default function PositionsPage() {
         onSubmit={handleOpenPosition}
         isLoading={isPending}
         error={txError}
+        monitoringActive={monitoring?.active ?? false}
       />
       <ToastContainer toasts={toasts} />
     </div>
